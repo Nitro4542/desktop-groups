@@ -1,0 +1,39 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.com/product.schema.json",
+    "title": "DesktopGroup",
+    "description": "A .desktopgroup file",
+    "type": "object",
+    "properties": {
+        "group": {
+            "type": "object",
+            "name": {
+                "type": "string"
+            },
+            "items": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "icon": {
+                            "type": "string"
+                        },
+                        "command": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "command"
+                    ]
+                }
+            }
+        }
+    },
+    "required": [
+        "group"
+    ]
+}
