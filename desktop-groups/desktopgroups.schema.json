@@ -10,6 +10,9 @@
             "name": {
                 "type": "string"
             },
+            "icon": {
+                "type": "string"
+            },
             "items": {
                 "type": "array",
                 "items": {
