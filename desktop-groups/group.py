@@ -11,9 +11,11 @@ class Group:
         self.items = []
 
     def add_item(self, name, icon, command):
+        # Adds item to items list
         self.items.append(dict(name = name, icon = icon, command = command))
 
     def remove_item(self, name):
+        # Removes item from items list
         for item in self.items:
             if item['name'] == name:
                 self.items.remove(item)
@@ -43,7 +45,13 @@ class DGFileGroup(Group):
 
 
     def validate(self):
-        jsonschema.validate(self.data, self.schema)
+        # Try to validate JSON
+        try:
+            jsonschema.validate(self.data, self.schema)
+        except jsonschema.exceptions as e:
+            print(f'Error: {e}')
+            sys.exit(1)
+
         if self.data.get('group', {}).get('name'):
             return True
         else:
