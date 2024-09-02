@@ -34,7 +34,10 @@
                     ]
                 }
             }
-        }
+        },
+        "required": [
+            "name"
+        ]
     },
     "required": [
         "group"
