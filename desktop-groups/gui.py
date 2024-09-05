@@ -1,8 +1,29 @@
 import sys
+import tkinter
 
 from PIL import Image
 import customtkinter
 import group
+
+
+class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
+    def __init__(self, master, items: list, **kwargs):
+        """
+        Displays all the items in the items list
+        :param master: Root frame
+        :param items: List containing all items
+        """
+        super().__init__(master, **kwargs)
+
+        # Prepare radio buttons
+        self.radio_buttons = []
+        self.radio_var = tkinter.IntVar(value=0)
+
+        # Add buttons to frame
+        for index, list_item in enumerate(items):
+            radio_button = customtkinter.CTkRadioButton(self, text=list_item.get('name'), variable=self.radio_var, value=index)
+            self.radio_buttons.append(radio_button)
+            radio_button.grid(row=index, column=0, padx=10, pady=10, sticky="ew")
 
 
 class GroupInfoFrame(customtkinter.CTkFrame):
@@ -84,15 +105,16 @@ class App(customtkinter.CTk, group.DGFileGroup):
         """Builds app layout"""
 
         # Spawn GroupInfoFrame
-        self.gi_frame = GroupInfoFrame(self, self.icon, self.name, self.scale_factor)
-        self.gi_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
+        self.group_info_frame = GroupInfoFrame(self, self.icon, self.name, self.scale_factor)
+        self.group_info_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
+
+        # Spawn GroupItemsFrame
+        self.group_items_frame = GroupItemsScrollableFrame(self, self.items)
+        self.group_items_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
         # Spawn ButtonFrame
         self.button_frame = ButtonFrame(self)
         self.button_frame.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
-
-    def _render_frame(self):
-        """Renders frame with items inside"""
 
     def _configure_window(self):
         """Configures window"""
@@ -146,5 +168,6 @@ class App(customtkinter.CTk, group.DGFileGroup):
     def _set_group_properties(self):
         """Renders the group properties"""
         self.title(self.name)
+
         if self.icon:
             self.iconbitmap(self.icon)
