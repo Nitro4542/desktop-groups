@@ -3,8 +3,8 @@ import sys
 import tkinter
 
 from PIL import Image
+from . import group
 import customtkinter
-import group
 
 
 class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
