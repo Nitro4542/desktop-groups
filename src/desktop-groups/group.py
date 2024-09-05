@@ -7,15 +7,31 @@ import jsonschema
 
 class Group:
     def __init__(self, name, icon = None):
+        """
+        A desktop group
+        :param name: Group name
+        :param icon: Group icon
+        """
         self.name = name
         self.icon = icon
 
         self.items = []
 
     def add_item(self, name, icon, command):
+        """
+        Adds an item to the items list
+        :param name: Item name
+        :param icon: Item icon
+        :param command: Item command
+        """
         self.items.append(dict(name = name, icon = icon, command = command))
 
     def remove_item(self, name):
+        """
+        Removes an item from the items list
+        :param name: Item name
+        :return:
+        """
         for item in self.items:
             if item['name'] == name:
                 self.items.remove(item)
@@ -24,6 +40,10 @@ class Group:
 
 class DGFileGroup(Group):
     def __init__(self, dg_file):
+        """
+        Desktop group from a file
+        :param dg_file: Location of file
+        """
         # Read .desktopgroup file
         with open(dg_file, 'r') as file:
             self.data = json.load(file)
@@ -48,6 +68,10 @@ class DGFileGroup(Group):
             self.items.append(item)
 
     def validate(self):
+        """
+        Validates the desktopgroup file
+        :return: Returns True if file is valid
+        """
         try:
             jsonschema.validate(self.data, self.schema)
         except jsonschema.exceptions as e:
