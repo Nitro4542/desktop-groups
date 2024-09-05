@@ -1,0 +1,4 @@
+customtkinter
+pillow
+jsonschema
+argparse
