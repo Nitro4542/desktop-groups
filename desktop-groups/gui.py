@@ -64,6 +64,10 @@ class ButtonFrame(customtkinter.CTkFrame):
 
 class App(customtkinter.CTk, group.DGFileGroup):
     def __init__(self, dg_file):
+        """
+        Main window for opening a .desktopgroup file
+        :param dg_file: .desktopgroup file
+        """
         # Initialize CustomTkinter
         customtkinter.CTk.__init__(self)
 
