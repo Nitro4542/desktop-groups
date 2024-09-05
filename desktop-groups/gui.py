@@ -89,6 +89,7 @@ class ButtonFrame(customtkinter.CTkFrame):
         sys.exit(0)
 
     def continue_button_command(self):
+        """Opens the desired command selected by the radio buttons"""
         subprocess.Popen(self.group_items_frame.get_command(), shell=False)
         sys.exit(0)
 
