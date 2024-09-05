@@ -7,6 +7,8 @@ class App(customtkinter.CTk):
 
         # Set window properties
         self.title('DesktopGroups')
+        self.resizable(False, False)
+        self.attributes('-topmost', True)
 
         # Define window dimensions
         self.window_width = 500
