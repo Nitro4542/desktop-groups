@@ -1,7 +1,9 @@
+import importlib.resources
 import json
 import sys
 
 import jsonschema
+
 
 class Group:
     def __init__(self, name, icon = None):
@@ -27,7 +29,7 @@ class DGFileGroup(Group):
             self.data = json.load(file)
 
         # Read JSON schema
-        with open('desktopgroups.schema.json', 'r') as schema:
+        with importlib.resources.open_text('desktop-groups', 'desktopgroups.schema.json') as schema:
             self.schema = json.load(schema)
 
         # Validate JSON

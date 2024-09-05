@@ -1,4 +1,4 @@
-import gui
+from . import gui
 import argparse
 
 
