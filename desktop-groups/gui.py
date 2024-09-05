@@ -1,3 +1,4 @@
+import subprocess
 import sys
 import tkinter
 
@@ -15,15 +16,21 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
         """
         super().__init__(master, **kwargs)
 
+        self.item_list = items
+
         # Prepare radio buttons
         self.radio_buttons = []
         self.radio_var = tkinter.IntVar(value=0)
 
         # Add buttons to frame
-        for index, list_item in enumerate(items):
+        for index, list_item in enumerate(self.item_list):
             radio_button = customtkinter.CTkRadioButton(self, text=list_item.get('name'), variable=self.radio_var, value=index)
             self.radio_buttons.append(radio_button)
             radio_button.grid(row=index, column=0, padx=10, pady=10, sticky="ew")
+
+    def get_command(self):
+        """Returns the command of the selected radio button"""
+        return self.item_list[self.radio_var.get()].get('command')
 
 
 class GroupInfoFrame(customtkinter.CTkFrame):
@@ -55,12 +62,14 @@ class GroupInfoFrame(customtkinter.CTkFrame):
         self.gi_icon.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
 class ButtonFrame(customtkinter.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, group_items_frame, **kwargs):
         """
         Displays the 'Continue' and 'Cancel' button
         :param master: Root frame
         """
         super().__init__(master, **kwargs)
+
+        self.group_items_frame = group_items_frame
 
         # Configure grid
         self.rowconfigure(0, weight=1)
@@ -80,7 +89,8 @@ class ButtonFrame(customtkinter.CTkFrame):
         sys.exit(0)
 
     def continue_button_command(self):
-        pass
+        subprocess.Popen(self.group_items_frame.get_command(), shell=False)
+        sys.exit(0)
 
 
 class App(customtkinter.CTk, group.DGFileGroup):
@@ -113,7 +123,7 @@ class App(customtkinter.CTk, group.DGFileGroup):
         self.group_items_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
         # Spawn ButtonFrame
-        self.button_frame = ButtonFrame(self)
+        self.button_frame = ButtonFrame(self, self.group_items_frame)
         self.button_frame.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
 
     def _configure_window(self):
