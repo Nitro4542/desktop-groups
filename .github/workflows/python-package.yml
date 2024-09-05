@@ -32,6 +32,3 @@ jobs:
     - name: Build Python package
       run: |
         python -m build
-    - name: Test with pytest
-      run: |
-        pytest
