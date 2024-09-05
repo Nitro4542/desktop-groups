@@ -39,8 +39,8 @@ class DGFileGroup(Group):
         super().__init__(self.data.get('group', {}).get('name'), self.data.get('group', {}).get('icon'))
 
         # Add items to self.items list
-        group = self.data.get("group", {})
-        items = group.get("items", [])
+        group = self.data.get('group', {})
+        items = group.get('items', [])
 
         for item in items:
             self.items.append(item)
