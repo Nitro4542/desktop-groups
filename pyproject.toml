@@ -27,3 +27,6 @@ Issues = "https://github.com/Nitro4542/desktop-groups/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools]
+include-package-data = true
