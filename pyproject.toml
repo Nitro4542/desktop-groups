@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "desktop-groups"
+version = "0.0.1"
+dependencies = [
+    "customtkinter",
+    "pillow",
+    "jsonschema",
+    "argparse"
+]
+authors = ["Nitro4542"]
+description = "Organizes your desktop"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Unlicense",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Nitro4542/desktop-groups"
+Issues = "https://github.com/Nitro4542/desktop-groups/issues"
