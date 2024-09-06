@@ -2,7 +2,7 @@
 Organizes your desktop
 
 ## How do I use it?
-Parse a valid .desktopgroup file to the script, e.g.:
+Parse a valid desktopgroup file to the script, e.g.:
 
 ```bash
 python -m desktop-groups C:\multimedia.desktopgroup
@@ -13,7 +13,7 @@ python -m desktop-groups C:\multimedia.desktopgroup
 
 ## How do I make my own .desktopgroup file?
 
-The .desktopgroup format uses the JSON syntax. Here's how a file could look:
+The desktopgroup format uses the JSON syntax. Here's how a file could look:
 
 ```json
 {
