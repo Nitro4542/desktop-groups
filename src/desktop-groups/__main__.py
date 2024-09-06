@@ -1,5 +1,8 @@
-from . import gui
+"""
+Main part of desktop-groups module
+"""
 import argparse
+from . import gui
 
 
 if __name__ == "__main__":

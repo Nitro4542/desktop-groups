@@ -1,3 +1,6 @@
+"""
+Desktop group module for reading JSON files and storing their values
+"""
 import importlib.resources
 import json
 import sys
@@ -6,9 +9,11 @@ import jsonschema
 
 
 class Group:
+    """
+    A desktop group
+    """
     def __init__(self, name: str, icon: str = None):
         """
-        A desktop group
         :param name: Group name
         :param icon: Group icon
         """
@@ -39,17 +44,19 @@ class Group:
 
 
 class DGFileGroup(Group):
+    """
+    A desktop group created from a file
+    """
     def __init__(self, dg_file: str):
         """
-        Desktop group from a file
         :param dg_file: Location of file
         """
         # Read .desktopgroup file
-        with open(dg_file, 'r') as file:
+        with open(dg_file, 'r', encoding="utf-8") as file:
             self.data = json.load(file)
 
         # Read JSON schema
-        with importlib.resources.open_text('desktop-groups', 'desktopgroups.schema.json') as schema:
+        with importlib.resources.open_text('desktop-groups', 'desktopgroups.schema.json', encoding="utf-8") as schema:
             self.schema = json.load(schema)
 
         # Validate JSON
@@ -74,7 +81,7 @@ class DGFileGroup(Group):
         """
         try:
             jsonschema.validate(self.data, self.schema)
-        except jsonschema.exceptions as e:
+        except Exception as e:
             print(f'Error: {e}')
             return False
         return True

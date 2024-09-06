@@ -1,16 +1,21 @@
+"""
+Desktop group GUI
+"""
 import subprocess
 import sys
 from tkinter import IntVar, font
 
 from PIL import Image
-from . import group
 import customtkinter
+from . import group
 
 
 class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
+    """
+    Displays all the items in the items list
+    """
     def __init__(self, master, items: list, scale: float, base_font: customtkinter.CTkFont, **kwargs):
         """
-        Displays all the items in the items list
         :param master: Root frame
         :param items: List containing all items
         """
@@ -28,10 +33,12 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
         # Add buttons to frame
         for index, list_item in enumerate(self.item_list):
             if list_item.get('icon'):
-                img = customtkinter.CTkImage(light_image=Image.open(list_item.get('icon')), size=((int(24 * scale)), int((24 * scale))))
+                img = customtkinter.CTkImage(light_image=Image.open(list_item.get('icon')),
+                                             size=((int(24 * scale)), int((24 * scale))))
                 icon = customtkinter.CTkLabel(self, text="", image=img)
                 icon.grid(row=index, column=0, padx=10, pady=10)
-            radio_button = customtkinter.CTkRadioButton(self, text=list_item.get('name'), font=base_font, variable=self.radio_var, value=index)
+            radio_button = customtkinter.CTkRadioButton(self, text=list_item.get('name'), font=base_font,
+                                                        variable=self.radio_var, value=index)
             radio_button.grid(row=index, column=1, padx=10, pady=10, sticky="ew")
 
     def get_command(self):
@@ -40,9 +47,11 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
 
 
 class GroupInfoFrame(customtkinter.CTkFrame):
+    """
+    Displays logo and text of a group
+    """
     def __init__(self, master, icon: str, text: str, scale: float, title_font: customtkinter.CTkFont, **kwargs):
         """
-        Displays logo and text of a group
         :param master: Root frame
         :param icon: Path to icon
         :param text: Name of group
@@ -68,9 +77,11 @@ class GroupInfoFrame(customtkinter.CTkFrame):
         self.gi_icon.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
 class ButtonFrame(customtkinter.CTkFrame):
+    """
+    Displays the 'Continue' and 'Cancel' button
+    """
     def __init__(self, master, group_items_frame: GroupItemsScrollableFrame, base_font: customtkinter.CTkFont, **kwargs):
         """
-        Displays the 'Continue' and 'Cancel' button
         :param master: Root frame
         """
         super().__init__(master, **kwargs)
@@ -84,10 +95,12 @@ class ButtonFrame(customtkinter.CTkFrame):
         self.columnconfigure(1, weight=1)
 
         # Configure and place buttons
-        self.continue_button = customtkinter.CTkButton(self, text="Continue", font=base_font, command=lambda: self.continue_button_command())
+        self.continue_button = customtkinter.CTkButton(self, text="Continue", font=base_font,
+                                                       command=lambda: self.continue_button_command())
         self.continue_button.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
-        self.cancel_button = customtkinter.CTkButton(self, text="Cancel", font=base_font, command=lambda: self.cancel_button_command())
+        self.cancel_button = customtkinter.CTkButton(self, text="Cancel", font=base_font,
+                                                     command=lambda: self.cancel_button_command())
         self.cancel_button.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
 
     def cancel_button_command(self):
@@ -101,9 +114,11 @@ class ButtonFrame(customtkinter.CTkFrame):
 
 
 class App(customtkinter.CTk, group.DGFileGroup):
+    """
+    Main window for opening a .desktopgroup file
+    """
     def __init__(self, dg_file: str):
         """
-        Main window for opening a .desktopgroup file
         :param dg_file: .desktopgroup file
         """
         # Initialize CustomTkinter
@@ -178,7 +193,8 @@ class App(customtkinter.CTk, group.DGFileGroup):
     def _calculate_window_position(self):
         """Calculates window position"""
         win_x = int(((self.screen_width / 2) - (self.window_width / 2)) * self.scale_factor)
-        win_y = int(((self.screen_height / 2) - (self.window_height / 1.5)) * self.scale_factor) + (80 * self.scale_factor)
+        win_y = (int(((self.screen_height / 2) - (self.window_height / 1.5)) * self.scale_factor) +
+                 (80 * self.scale_factor))
         return win_x, win_y
 
     def _window_geometry(self):
