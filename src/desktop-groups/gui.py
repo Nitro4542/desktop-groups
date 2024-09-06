@@ -1,4 +1,3 @@
-import platform
 import subprocess
 import sys
 from tkinter import IntVar, font
