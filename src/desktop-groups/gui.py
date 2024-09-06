@@ -8,7 +8,7 @@ import customtkinter
 
 
 class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
-    def __init__(self, master, items: list, **kwargs):
+    def __init__(self, master, items: list, scale, **kwargs):
         """
         Displays all the items in the items list
         :param master: Root frame
@@ -18,15 +18,21 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
 
         self.item_list = items
 
+        # Configure grid
+        self.columnconfigure(0, weight=0)
+        self.columnconfigure(1, weight=1)
+
         # Prepare radio buttons
-        self.radio_buttons = []
         self.radio_var = tkinter.IntVar(value=0)
 
         # Add buttons to frame
         for index, list_item in enumerate(self.item_list):
+            if list_item.get('icon'):
+                img = customtkinter.CTkImage(light_image=Image.open(list_item.get('icon')), size=((int(24 * scale)), int((24 * scale))))
+                icon = customtkinter.CTkLabel(self, text="", image=img)
+                icon.grid(row=index, column=0, padx=10, pady=10)
             radio_button = customtkinter.CTkRadioButton(self, text=list_item.get('name'), variable=self.radio_var, value=index)
-            self.radio_buttons.append(radio_button)
-            radio_button.grid(row=index, column=0, padx=10, pady=10, sticky="ew")
+            radio_button.grid(row=index, column=1, padx=10, pady=10, sticky="ew")
 
     def get_command(self):
         """Returns the command of the selected radio button"""
@@ -120,7 +126,7 @@ class App(customtkinter.CTk, group.DGFileGroup):
         self.group_info_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
         # Spawn GroupItemsFrame
-        self.group_items_frame = GroupItemsScrollableFrame(self, self.items)
+        self.group_items_frame = GroupItemsScrollableFrame(self, self.items, self.scale_factor)
         self.group_items_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
         # Spawn ButtonFrame
