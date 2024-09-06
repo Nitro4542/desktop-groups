@@ -6,7 +6,7 @@ import jsonschema
 
 
 class Group:
-    def __init__(self, name, icon = None):
+    def __init__(self, name: str, icon: str = None):
         """
         A desktop group
         :param name: Group name
@@ -17,7 +17,7 @@ class Group:
 
         self.items = []
 
-    def add_item(self, name, icon, command):
+    def add_item(self, name: str, icon: str, command: str):
         """
         Adds an item to the items list
         :param name: Item name
@@ -26,7 +26,7 @@ class Group:
         """
         self.items.append(dict(name = name, icon = icon, command = command))
 
-    def remove_item(self, name):
+    def remove_item(self, name: str):
         """
         Removes an item from the items list
         :param name: Item name
@@ -39,7 +39,7 @@ class Group:
 
 
 class DGFileGroup(Group):
-    def __init__(self, dg_file):
+    def __init__(self, dg_file: str):
         """
         Desktop group from a file
         :param dg_file: Location of file
