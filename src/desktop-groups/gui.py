@@ -1,6 +1,7 @@
+import platform
 import subprocess
 import sys
-import tkinter
+from tkinter import IntVar, font
 
 from PIL import Image
 from . import group
@@ -8,7 +9,7 @@ import customtkinter
 
 
 class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
-    def __init__(self, master, items: list, scale, **kwargs):
+    def __init__(self, master, items: list, scale: float, base_font: customtkinter.CTkFont, **kwargs):
         """
         Displays all the items in the items list
         :param master: Root frame
@@ -23,7 +24,7 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
         self.columnconfigure(1, weight=1)
 
         # Prepare radio buttons
-        self.radio_var = tkinter.IntVar(value=0)
+        self.radio_var = IntVar(value=0)
 
         # Add buttons to frame
         for index, list_item in enumerate(self.item_list):
@@ -31,7 +32,7 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
                 img = customtkinter.CTkImage(light_image=Image.open(list_item.get('icon')), size=((int(24 * scale)), int((24 * scale))))
                 icon = customtkinter.CTkLabel(self, text="", image=img)
                 icon.grid(row=index, column=0, padx=10, pady=10)
-            radio_button = customtkinter.CTkRadioButton(self, text=list_item.get('name'), variable=self.radio_var, value=index)
+            radio_button = customtkinter.CTkRadioButton(self, text=list_item.get('name'), font=base_font, variable=self.radio_var, value=index)
             radio_button.grid(row=index, column=1, padx=10, pady=10, sticky="ew")
 
     def get_command(self):
@@ -40,7 +41,7 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
 
 
 class GroupInfoFrame(customtkinter.CTkFrame):
-    def __init__(self, master, icon: str, text: str, scale: float, **kwargs):
+    def __init__(self, master, icon: str, text: str, scale: float, title_font: customtkinter.CTkFont, **kwargs):
         """
         Displays logo and text of a group
         :param master: Root frame
@@ -57,7 +58,7 @@ class GroupInfoFrame(customtkinter.CTkFrame):
         self.columnconfigure(1, weight=1)
 
         # Configure and spawn text
-        self.gi_title = customtkinter.CTkLabel(self, text=text)
+        self.gi_title = customtkinter.CTkLabel(self, text=text.upper(), font=title_font)
         self.gi_title.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
 
         # Configure icon
@@ -68,7 +69,7 @@ class GroupInfoFrame(customtkinter.CTkFrame):
         self.gi_icon.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
 class ButtonFrame(customtkinter.CTkFrame):
-    def __init__(self, master, group_items_frame, **kwargs):
+    def __init__(self, master, group_items_frame: GroupItemsScrollableFrame, base_font: customtkinter.CTkFont, **kwargs):
         """
         Displays the 'Continue' and 'Cancel' button
         :param master: Root frame
@@ -84,10 +85,10 @@ class ButtonFrame(customtkinter.CTkFrame):
         self.columnconfigure(1, weight=1)
 
         # Configure and place buttons
-        self.continue_button = customtkinter.CTkButton(self, text="Continue", command=lambda: self.continue_button_command())
+        self.continue_button = customtkinter.CTkButton(self, text="Continue", font=base_font, command=lambda: self.continue_button_command())
         self.continue_button.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
-        self.cancel_button = customtkinter.CTkButton(self, text="Cancel", command=lambda: self.cancel_button_command())
+        self.cancel_button = customtkinter.CTkButton(self, text="Cancel", font=base_font, command=lambda: self.cancel_button_command())
         self.cancel_button.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
 
     def cancel_button_command(self):
@@ -101,7 +102,7 @@ class ButtonFrame(customtkinter.CTkFrame):
 
 
 class App(customtkinter.CTk, group.DGFileGroup):
-    def __init__(self, dg_file):
+    def __init__(self, dg_file: str):
         """
         Main window for opening a .desktopgroup file
         :param dg_file: .desktopgroup file
@@ -122,15 +123,15 @@ class App(customtkinter.CTk, group.DGFileGroup):
         """Builds app layout"""
 
         # Spawn GroupInfoFrame
-        self.group_info_frame = GroupInfoFrame(self, self.icon, self.name, self.scale_factor)
+        self.group_info_frame = GroupInfoFrame(self, self.icon, self.name, self.scale_factor, self.title_font)
         self.group_info_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
         # Spawn GroupItemsFrame
-        self.group_items_frame = GroupItemsScrollableFrame(self, self.items, self.scale_factor)
+        self.group_items_frame = GroupItemsScrollableFrame(self, self.items, self.scale_factor, self.base_font)
         self.group_items_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
         # Spawn ButtonFrame
-        self.button_frame = ButtonFrame(self, self.group_items_frame)
+        self.button_frame = ButtonFrame(self, self.group_items_frame, self.base_font)
         self.button_frame.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
 
     def _configure_window(self):
@@ -157,6 +158,9 @@ class App(customtkinter.CTk, group.DGFileGroup):
 
         # Set window geometry
         self._set_geometry()
+
+        # Create font objects
+        self._create_font_objects()
 
 
     def _set_geometry(self):
@@ -188,3 +192,13 @@ class App(customtkinter.CTk, group.DGFileGroup):
 
         if self.icon:
             self.iconbitmap(self.icon)
+
+    def _create_font_objects(self):
+        """Creates objects for different font types"""
+
+        # Get system font
+        default_font = font.nametofont("TkDefaultFont")
+
+        # Create objects
+        self.base_font = customtkinter.CTkFont(default_font.cget('family'))
+        self.title_font = customtkinter.CTkFont(default_font.cget('family'), 22, "bold")
