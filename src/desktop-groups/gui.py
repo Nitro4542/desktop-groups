@@ -34,7 +34,7 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
         # Add buttons to frame
         for index, list_item in enumerate(self.item_list):
             if list_item.get('icon'):
-                img = customtkinter.CTkImage(light_image=Image.open(self.open_icon(list_item.get('icon'))),
+                img = customtkinter.CTkImage(light_image=Image.open(self._open_icon(list_item.get('icon'))),
                                              size=((int(24 * scale)), int((24 * scale))))
                 icon = customtkinter.CTkLabel(self, text="", image=img)
                 icon.grid(row=index, column=0, padx=10, pady=10)
@@ -46,7 +46,7 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
         """Returns the command of the selected radio button"""
         return self.item_list[self.radio_var.get()].get('command')
 
-    def open_icon(self, icon: str):
+    def _open_icon(self, icon: str):
         """Opens an icon and prepares it for PIL"""
         if icon.endswith('.exe'):
             try:
@@ -87,11 +87,29 @@ class GroupInfoFrame(customtkinter.CTkFrame):
         self.gi_title.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
 
         # Configure icon
-        self.img = customtkinter.CTkImage(light_image=Image.open(icon), size=((int(32 * scale)), int((32 * scale))))
+        self.img = customtkinter.CTkImage(light_image=Image.open(self._open_icon(icon)),
+                                          size=((int(32 * scale)), int((32 * scale))))
 
         # Spawn icon
         self.gi_icon = customtkinter.CTkLabel(self, text="", image=self.img)
         self.gi_icon.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+
+    def _open_icon(self, icon: str):
+        """Opens an icon and prepares it for PIL"""
+        if icon.endswith('.exe'):
+            try:
+                # Load icon
+                extractor = IconExtractor(icon)
+
+                # Read icon
+                data = extractor.get_icon(num=0)
+
+                return data
+
+            except IconExtractorError:
+                return None
+        else:
+            return icon
 
 class ButtonFrame(customtkinter.CTkFrame):
     """
