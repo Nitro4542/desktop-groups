@@ -162,30 +162,6 @@ class App(customtkinter.CTk, group.DGFileGroup):
         # Initialize DGFileGroup
         group.DGFileGroup.__init__(self, dg_file)
 
-        # Configure window
-        self._configure_window()
-
-        # Build layout
-        self._build_layout()
-
-    def _build_layout(self):
-        """Builds app layout"""
-
-        # Spawn GroupInfoFrame
-        self.group_info_frame = GroupInfoFrame(self, self.icon, self.name, self.scale_factor, self.title_font)
-        self.group_info_frame.grid(row=0, column=0, padx=10, pady=10, sticky='ew')
-
-        # Spawn GroupItemsFrame
-        self.group_items_frame = GroupItemsScrollableFrame(self, self.items, self.scale_factor, self.base_font)
-        self.group_items_frame.grid(row=1, column=0, padx=10, pady=10, sticky='nsew')
-
-        # Spawn ButtonFrame
-        self.button_frame = ButtonFrame(self, self.group_items_frame, self.base_font)
-        self.button_frame.grid(row=2, column=0, padx=10, pady=10, sticky='ew')
-
-    def _configure_window(self):
-        """Configures window"""
-
         # Set window properties
         self.resizable(False, False)
         self.attributes('-topmost', True)
@@ -211,6 +187,23 @@ class App(customtkinter.CTk, group.DGFileGroup):
         # Create font objects
         self._create_font_objects()
 
+        # Build layout
+        self._build_layout()
+
+    def _build_layout(self):
+        """Builds app layout"""
+
+        # Spawn GroupInfoFrame
+        self.group_info_frame = GroupInfoFrame(self, self.icon, self.name, self.scale_factor, self.title_font)
+        self.group_info_frame.grid(row=0, column=0, padx=10, pady=10, sticky='ew')
+
+        # Spawn GroupItemsFrame
+        self.group_items_frame = GroupItemsScrollableFrame(self, self.items, self.scale_factor, self.base_font)
+        self.group_items_frame.grid(row=1, column=0, padx=10, pady=10, sticky='nsew')
+
+        # Spawn ButtonFrame
+        self.button_frame = ButtonFrame(self, self.group_items_frame, self.base_font)
+        self.button_frame.grid(row=2, column=0, padx=10, pady=10, sticky='ew')
 
     def _set_geometry(self):
         """Sets window geometry and centers window on screen"""

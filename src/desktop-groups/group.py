@@ -81,7 +81,7 @@ class DGFileGroup(Group):
         """
         try:
             jsonschema.validate(self.data, self.schema)
-        except Exception as e:
+        except jsonschema.ValidationError as e:
             print(f'Error: {e}')
             return False
         return True
