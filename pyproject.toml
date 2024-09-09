@@ -9,7 +9,8 @@ dependencies = [
     "customtkinter",
     "pillow",
     "jsonschema",
-    "argparse"
+    "argparse",
+    "icoextract"
 ]
 authors = [{ name="Nitro4542" }]
 description = "Organizes your desktop"

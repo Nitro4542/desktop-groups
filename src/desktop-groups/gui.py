@@ -6,6 +6,7 @@ import sys
 from tkinter import IntVar, font
 
 from PIL import Image
+from icoextract import IconExtractor, IconExtractorError
 import customtkinter
 from . import group
 
@@ -33,18 +34,34 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
         # Add buttons to frame
         for index, list_item in enumerate(self.item_list):
             if list_item.get('icon'):
-                img = customtkinter.CTkImage(light_image=Image.open(list_item.get('icon')),
+                img = customtkinter.CTkImage(light_image=Image.open(self._open_icon(list_item.get('icon'))),
                                              size=((int(24 * scale)), int((24 * scale))))
-                icon = customtkinter.CTkLabel(self, text="", image=img)
+                icon = customtkinter.CTkLabel(self, text='', image=img)
                 icon.grid(row=index, column=0, padx=10, pady=10)
             radio_button = customtkinter.CTkRadioButton(self, text=list_item.get('name'), font=base_font,
                                                         variable=self.radio_var, value=index)
-            radio_button.grid(row=index, column=1, padx=10, pady=10, sticky="ew")
+            radio_button.grid(row=index, column=1, padx=10, pady=10, sticky='ew')
 
     def get_command(self):
         """Returns the command of the selected radio button"""
         return self.item_list[self.radio_var.get()].get('command')
 
+    def _open_icon(self, icon: str):
+        """Opens an icon and prepares it for PIL"""
+        if icon.endswith('.exe'):
+            try:
+                # Load icon
+                extractor = IconExtractor(icon)
+
+                # Read icon
+                data = extractor.get_icon(num=0)
+
+                return data
+
+            except IconExtractorError:
+                return None
+        else:
+            return icon
 
 class GroupInfoFrame(customtkinter.CTkFrame):
     """
@@ -67,14 +84,32 @@ class GroupInfoFrame(customtkinter.CTkFrame):
 
         # Configure and spawn text
         self.gi_title = customtkinter.CTkLabel(self, text=text.upper(), font=title_font)
-        self.gi_title.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
+        self.gi_title.grid(row=0, column=1, padx=10, pady=10, sticky='ew')
 
         # Configure icon
-        self.img = customtkinter.CTkImage(light_image=Image.open(icon), size=((int(32 * scale)), int((32 * scale))))
+        self.img = customtkinter.CTkImage(light_image=Image.open(self._open_icon(icon)),
+                                          size=((int(32 * scale)), int((32 * scale))))
 
         # Spawn icon
-        self.gi_icon = customtkinter.CTkLabel(self, text="", image=self.img)
-        self.gi_icon.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+        self.gi_icon = customtkinter.CTkLabel(self, text='', image=self.img)
+        self.gi_icon.grid(row=0, column=0, padx=10, pady=10, sticky='w')
+
+    def _open_icon(self, icon: str):
+        """Opens an icon and prepares it for PIL"""
+        if icon.endswith('.exe'):
+            try:
+                # Load icon
+                extractor = IconExtractor(icon)
+
+                # Read icon
+                data = extractor.get_icon(num=0)
+
+                return data
+
+            except IconExtractorError:
+                return None
+        else:
+            return icon
 
 class ButtonFrame(customtkinter.CTkFrame):
     """
@@ -95,13 +130,13 @@ class ButtonFrame(customtkinter.CTkFrame):
         self.columnconfigure(1, weight=1)
 
         # Configure and place buttons
-        self.continue_button = customtkinter.CTkButton(self, text="Continue", font=base_font,
+        self.continue_button = customtkinter.CTkButton(self, text='Continue', font=base_font,
                                                        command=lambda: self.continue_button_command())
-        self.continue_button.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
+        self.continue_button.grid(row=0, column=0, padx=10, pady=10, sticky='ew')
 
-        self.cancel_button = customtkinter.CTkButton(self, text="Cancel", font=base_font,
+        self.cancel_button = customtkinter.CTkButton(self, text='Cancel', font=base_font,
                                                      command=lambda: self.cancel_button_command())
-        self.cancel_button.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
+        self.cancel_button.grid(row=0, column=1, padx=10, pady=10, sticky='ew')
 
     def cancel_button_command(self):
         """Closes the app when the cancel button gets pressed"""
@@ -126,30 +161,6 @@ class App(customtkinter.CTk, group.DGFileGroup):
 
         # Initialize DGFileGroup
         group.DGFileGroup.__init__(self, dg_file)
-
-        # Configure window
-        self._configure_window()
-
-        # Build layout
-        self._build_layout()
-
-    def _build_layout(self):
-        """Builds app layout"""
-
-        # Spawn GroupInfoFrame
-        self.group_info_frame = GroupInfoFrame(self, self.icon, self.name, self.scale_factor, self.title_font)
-        self.group_info_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
-
-        # Spawn GroupItemsFrame
-        self.group_items_frame = GroupItemsScrollableFrame(self, self.items, self.scale_factor, self.base_font)
-        self.group_items_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
-
-        # Spawn ButtonFrame
-        self.button_frame = ButtonFrame(self, self.group_items_frame, self.base_font)
-        self.button_frame.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
-
-    def _configure_window(self):
-        """Configures window"""
 
         # Set window properties
         self.resizable(False, False)
@@ -176,6 +187,23 @@ class App(customtkinter.CTk, group.DGFileGroup):
         # Create font objects
         self._create_font_objects()
 
+        # Build layout
+        self._build_layout()
+
+    def _build_layout(self):
+        """Builds app layout"""
+
+        # Spawn GroupInfoFrame
+        self.group_info_frame = GroupInfoFrame(self, self.icon, self.name, self.scale_factor, self.title_font)
+        self.group_info_frame.grid(row=0, column=0, padx=10, pady=10, sticky='ew')
+
+        # Spawn GroupItemsFrame
+        self.group_items_frame = GroupItemsScrollableFrame(self, self.items, self.scale_factor, self.base_font)
+        self.group_items_frame.grid(row=1, column=0, padx=10, pady=10, sticky='nsew')
+
+        # Spawn ButtonFrame
+        self.button_frame = ButtonFrame(self, self.group_items_frame, self.base_font)
+        self.button_frame.grid(row=2, column=0, padx=10, pady=10, sticky='ew')
 
     def _set_geometry(self):
         """Sets window geometry and centers window on screen"""
@@ -212,8 +240,8 @@ class App(customtkinter.CTk, group.DGFileGroup):
         """Creates objects for different font types"""
 
         # Get system font
-        default_font = font.nametofont("TkDefaultFont")
+        default_font = font.nametofont('TkDefaultFont')
 
         # Create objects
         self.base_font = customtkinter.CTkFont(default_font.cget('family'))
-        self.title_font = customtkinter.CTkFont(default_font.cget('family'), 22, "bold")
+        self.title_font = customtkinter.CTkFont(default_font.cget('family'), 22, 'bold')

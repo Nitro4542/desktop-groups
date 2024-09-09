@@ -52,11 +52,11 @@ class DGFileGroup(Group):
         :param dg_file: Location of file
         """
         # Read .desktopgroup file
-        with open(dg_file, 'r', encoding="utf-8") as file:
+        with open(dg_file, 'r', encoding='utf-8') as file:
             self.data = json.load(file)
 
         # Read JSON schema
-        with importlib.resources.open_text('desktop-groups', 'desktopgroups.schema.json', encoding="utf-8") as schema:
+        with importlib.resources.open_text('desktop-groups', 'desktopgroups.schema.json', encoding='utf-8') as schema:
             self.schema = json.load(schema)
 
         # Validate JSON
@@ -81,7 +81,7 @@ class DGFileGroup(Group):
         """
         try:
             jsonschema.validate(self.data, self.schema)
-        except Exception as e:
+        except jsonschema.ValidationError as e:
             print(f'Error: {e}')
             return False
         return True
