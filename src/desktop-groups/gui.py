@@ -6,6 +6,7 @@ import sys
 from tkinter import IntVar, font
 
 from PIL import Image
+from icoextract import IconExtractor, IconExtractorError
 import customtkinter
 from . import group
 
@@ -33,7 +34,7 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
         # Add buttons to frame
         for index, list_item in enumerate(self.item_list):
             if list_item.get('icon'):
-                img = customtkinter.CTkImage(light_image=Image.open(list_item.get('icon')),
+                img = customtkinter.CTkImage(light_image=Image.open(self.open_icon(list_item.get('icon'))),
                                              size=((int(24 * scale)), int((24 * scale))))
                 icon = customtkinter.CTkLabel(self, text="", image=img)
                 icon.grid(row=index, column=0, padx=10, pady=10)
@@ -45,6 +46,22 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
         """Returns the command of the selected radio button"""
         return self.item_list[self.radio_var.get()].get('command')
 
+    def open_icon(self, icon: str):
+        """Opens an icon and prepares it for PIL"""
+        if icon.endswith('.exe'):
+            try:
+                # Load icon
+                extractor = IconExtractor(icon)
+
+                # Read icon
+                data = extractor.get_icon(num=0)
+
+                return data
+
+            except IconExtractorError:
+                return None
+        else:
+            return icon
 
 class GroupInfoFrame(customtkinter.CTkFrame):
     """
