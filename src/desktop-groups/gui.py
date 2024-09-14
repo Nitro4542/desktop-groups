@@ -152,9 +152,10 @@ class App(customtkinter.CTk, group.DGFileGroup):
     """
     Main window for opening a .desktopgroup file
     """
-    def __init__(self, dg_file: str):
+    def __init__(self, dg_file: str, theme: str = None):
         """
         :param dg_file: .desktopgroup file
+        :param theme: Path to theme file
         """
         # Initialize CustomTkinter
         customtkinter.CTk.__init__(self)
@@ -168,6 +169,10 @@ class App(customtkinter.CTk, group.DGFileGroup):
 
         # Set properties from group file
         self._set_group_properties()
+
+        # Set theme
+        if theme:
+            customtkinter.set_default_color_theme(theme)
 
         # Define window dimensions
         self.window_width = 500
