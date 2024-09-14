@@ -1,5 +1,8 @@
-# desktop-groups
-Organizes your desktop
+<div align="center">
+    <img src="assets/desktopgroups.png" alt="logo" width="192"/>
+    <h1>desktop-groups</h1>
+    <p>Organizes your desktop</p>
+</div>
 
 ## How do I use it?
 Parse a valid desktopgroup file to the script, e.g.:
