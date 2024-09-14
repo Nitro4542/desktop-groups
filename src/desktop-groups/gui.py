@@ -1,8 +1,11 @@
 """
 Desktop group GUI
 """
+import importlib.resources
+import os
 import subprocess
 import sys
+import tempfile
 from tkinter import IntVar, font
 
 from PIL import Image
@@ -35,7 +38,7 @@ class GroupItemsScrollableFrame(customtkinter.CTkScrollableFrame):
         for index, list_item in enumerate(self.item_list):
             if list_item.get('icon'):
                 img = customtkinter.CTkImage(light_image=Image.open(self._open_icon(list_item.get('icon'))),
-                                             size=((int(24 * scale)), int((24 * scale))))
+                                             size=((int(24 * scale)), int((24 * scale)))) if list_item.get('icon') else None
                 icon = customtkinter.CTkLabel(self, text='', image=img)
                 icon.grid(row=index, column=0, padx=10, pady=10)
             radio_button = customtkinter.CTkRadioButton(self, text=list_item.get('name'), font=base_font,
@@ -88,7 +91,7 @@ class GroupInfoFrame(customtkinter.CTkFrame):
 
         # Configure icon
         self.img = customtkinter.CTkImage(light_image=Image.open(self._open_icon(icon)),
-                                          size=((int(32 * scale)), int((32 * scale))))
+                                          size=((int(32 * scale)), int((32 * scale)))) if icon else None
 
         # Spawn icon
         self.gi_icon = customtkinter.CTkLabel(self, text='', image=self.img)
@@ -240,6 +243,21 @@ class App(customtkinter.CTk, group.DGFileGroup):
 
         if self.icon:
             self.iconbitmap(self.icon)
+        else:
+            # Use default icon as fallback
+            with importlib.resources.open_binary('desktop-groups', 'desktopgroups256px.ico') as default_icon:
+                with tempfile.NamedTemporaryFile(delete=False, suffix='.ico') as tmp_file:
+                    tmp_file.write(default_icon.read())
+                    tmp_file.flush()
+                    icon_path = tmp_file.name
+
+                    self.iconbitmap(icon_path)
+
+                    def on_close():
+                        os.remove(icon_path)
+                        self.destroy()
+
+                    self.protocol("WM_DELETE_WINDOW", on_close)
 
     def _create_font_objects(self):
         """Creates objects for different font types"""
