@@ -5,16 +5,16 @@
 </div>
 
 ## How do I use it?
-Parse a valid desktopgroup file to the script, e.g.:
+Pass a valid desktop group file to the script (and optionally specify a theme file), e.g:
 
 ```bash
-python -m desktop-groups C:\multimedia.desktopgroup
+python -m desktop-groups C:\multimedia.desktopgroup --theme C:\theme.json
 ```
 
 >[!TIP]
 > Create a shortcut on your desktop!
 
-## How do I make my own .desktopgroup file?
+## How do I make my own desktop group file?
 
 The desktopgroup format uses the JSON syntax. Here's how a file could look:
 
