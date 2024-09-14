@@ -33,4 +33,4 @@ where = ["src"]
 include-package-data = true
 
 [tool.setuptools.package-data]
-"*" = ["*.json"]
+"*" = ["*.json", "*.ico"]
