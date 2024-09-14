@@ -6,6 +6,7 @@ import json
 import sys
 
 import jsonschema
+from . import assets
 
 
 class Group:
@@ -56,7 +57,8 @@ class DGFileGroup(Group):
             self.data = json.load(file)
 
         # Read JSON schema
-        with importlib.resources.open_text('desktop-groups', 'desktopgroups.schema.json', encoding='utf-8') as schema:
+        inp_file = importlib.resources.files(assets) / 'json/desktopgroups.schema.json'
+        with inp_file.open('rt') as schema:
             self.schema = json.load(schema)
 
         # Validate JSON

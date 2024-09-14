@@ -2,16 +2,20 @@
 Desktop group GUI
 """
 import importlib.resources
+import json
+import locale
 import os
 import subprocess
 import sys
 import tempfile
+from ctypes import windll
 from tkinter import IntVar, font
 
 from PIL import Image
 from icoextract import IconExtractor, IconExtractorError
 import customtkinter
 from . import group
+from . import assets
 
 
 def _open_icon(icon: str):
@@ -116,16 +120,18 @@ class ButtonFrame(customtkinter.CTkFrame):
     """
     Displays the 'Continue' and 'Cancel' button
     """
-    def __init__(self, master, group_items_frame: GroupItemsScrollableFrame, base_font: customtkinter.CTkFont, **kwargs):
+    def __init__(self, master, group_items_frame: GroupItemsScrollableFrame, base_font: customtkinter.CTkFont, lang_data: dict, **kwargs):
         """
         :param master: Root frame or parent widget
         :param group_items_frame: Instance of `GroupItemsScrollableFrame` used to get the selected command
         :param base_font: Font to be used for the button text
+        :param lang_data: Langauge file JSON data
         """
 
         super().__init__(master, **kwargs)
 
         self.group_items_frame = group_items_frame
+        self.lang_data = lang_data
 
         # Configure grid
         self.rowconfigure(0, weight=1)
@@ -134,11 +140,11 @@ class ButtonFrame(customtkinter.CTkFrame):
         self.columnconfigure(1, weight=1)
 
         # Configure and place buttons
-        self.continue_button = customtkinter.CTkButton(self, text='Continue', font=base_font,
+        self.continue_button = customtkinter.CTkButton(self, text=self._get_continue_button_text(), font=base_font,
                                                        command=lambda: self.continue_button_command())
         self.continue_button.grid(row=0, column=0, padx=10, pady=10, sticky='ew')
 
-        self.cancel_button = customtkinter.CTkButton(self, text='Cancel', font=base_font,
+        self.cancel_button = customtkinter.CTkButton(self, text=self._get_cancel_button_text(), font=base_font,
                                                      command=lambda: self.cancel_button_command())
         self.cancel_button.grid(row=0, column=1, padx=10, pady=10, sticky='ew')
 
@@ -152,6 +158,20 @@ class ButtonFrame(customtkinter.CTkFrame):
         subprocess.Popen(self.group_items_frame.get_command(), shell=False)
         sys.exit(0)
 
+    def _get_continue_button_text(self):
+        """Sets the continue button text according to the system language
+
+        :return: 'Continue' in selected language
+        """
+
+        return self.lang_data.get('gui.continue')
+
+    def _get_cancel_button_text(self):
+        """Sets the cancel button text according to the system language
+
+        :return: 'Continue' in selected language
+        """
+        return self.lang_data.get('gui.cancel')
 
 class App(customtkinter.CTk, group.DGFileGroup):
     """
@@ -179,6 +199,9 @@ class App(customtkinter.CTk, group.DGFileGroup):
         # Set theme
         if theme:
             customtkinter.set_default_color_theme(theme)
+
+        # Set language
+        self._set_language()
 
         # Define window dimensions
         self.window_width = 500
@@ -213,7 +236,7 @@ class App(customtkinter.CTk, group.DGFileGroup):
         self.group_items_frame.grid(row=1, column=0, padx=10, pady=10, sticky='nsew')
 
         # Spawn ButtonFrame
-        self.button_frame = ButtonFrame(self, self.group_items_frame, self.base_font)
+        self.button_frame = ButtonFrame(self, self.group_items_frame, self.base_font, self.lang_data)
         self.button_frame.grid(row=2, column=0, padx=10, pady=10, sticky='ew')
 
     def _set_geometry(self):
@@ -280,3 +303,32 @@ class App(customtkinter.CTk, group.DGFileGroup):
         # Create objects
         self.base_font = customtkinter.CTkFont(default_font.cget('family'))
         self.title_font = customtkinter.CTkFont(default_font.cget('family'), 22, 'bold')
+
+    def _set_language(self):
+        """Loads the language file"""
+
+        if os.name == 'nt':
+            try:
+                lang_id = windll.kernel32.GetUserDefaultUILanguage()
+                self.lang_code = locale.windows_locale.get(lang_id, 'en')
+            except:
+                self.lang_code = 'en'
+        elif os.name == 'posix':
+            try:
+                language = locale.getdefaultlocale()
+                self.lang_code = language[0]
+            except:
+                self.lang_code = 'en'
+        else:
+            self.lang_code = 'en'
+
+        self.split_lang_code = self.lang_code.split('_')[0]
+
+        try:
+            inp_file = importlib.resources.files(assets) / f'lang/{self.split_lang_code}.json'
+            with inp_file.open('rt') as lang_file:
+                self.lang_data = json.load(lang_file)
+        except:
+            inp_file = importlib.resources.files(assets) / 'lang/en.json'
+            with inp_file.open('rt') as lang_file:
+                self.lang_data = json.load(lang_file)

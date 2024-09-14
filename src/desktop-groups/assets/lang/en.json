@@ -1,0 +1,6 @@
+{
+  "generic_error": "Error",
+  "group.json_validation_error": "Error while validating JSON",
+  "gui.continue": "Continue",
+  "gui.cancel": "Cancel"
+}

@@ -1,0 +1,6 @@
+{
+  "generic_error": "Fehler",
+  "group.json_validation_error": "Fehler während der Überprüfung des JSONs",
+  "gui.continue": "Fortfahren",
+  "gui.cancel": "Abbrechen"
+}
