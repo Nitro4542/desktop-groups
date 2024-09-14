@@ -1,2 +1,2 @@
-include src/desktop-groups/desktopgroups.schema.json
-include src/desktop-groups/desktopgroups256px.ico
+include src/desktop-groups/json/desktopgroups.schema.json
+include src/desktop-groups/img/desktopgroups256px.ico
