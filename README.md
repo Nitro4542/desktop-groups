@@ -40,6 +40,20 @@ The desktopgroup format uses the JSON syntax. Here's how a file could look:
 }
 ```
 
+## How do I install it?
+
+To install the latest somewhat stable release, run:
+```bash
+pip install desktop-groups
+```
+
+To build and install from the latest commit, run:
+```bash
+git clone https://github.com/Nitro4542/desktop-groups.git
+cd desktop-groups
+python -m pip install .
+```
+
 ## License
 ```text
 This is free and unencumbered software released into the public domain.
@@ -68,5 +82,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 For more information, please refer to <https://unlicense.org>
 ```
 
-Icon based on [folder icon by Font Awesome](https://fontawesome.com/icons/folder?f=classic&s=solid)  
+Icon based on [folder icon by Font Awesome](https://fontawesome.com/icons/folder?f=classic&s=solid)
+
 Icon font: [SUSE by René Bieder](https://fonts.google.com/specimen/SUSE)
