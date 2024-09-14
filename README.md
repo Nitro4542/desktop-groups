@@ -67,3 +67,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <https://unlicense.org>
 ```
+
+Icon based on [folder icon by Font Awesome](https://fontawesome.com/icons/folder?f=classic&s=solid)
+Icon font: [SUSE by René Bieder](https://fonts.google.com/specimen/SUSE)
