@@ -20,7 +20,7 @@ The desktopgroup format uses the JSON syntax. Here's how a file could look:
 
 ```json
 {
-    "$schema": "https://raw.githubusercontent.com/Nitro4542/desktop-groups/master/src/desktop-groups/desktopgroups.schema.json",
+    "$schema": "https://raw.githubusercontent.com/Nitro4542/desktop-groups/master/src/desktop-groups/assets/json/desktopgroups.schema.json",
     "group": {
         "name": "my group",
         "icon": "C:\\icon.ico",

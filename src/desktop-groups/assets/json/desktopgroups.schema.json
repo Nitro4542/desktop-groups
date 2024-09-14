@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/Nitro4542/desktop-groups/master/src/desktop-groups/desktopgroups.schema.json",
+    "$id": "https://raw.githubusercontent.com/Nitro4542/desktop-groups/master/src/desktop-groups/assets/json/desktopgroups.schema.json",
     "title": "DesktopGroup",
     "description": "A .desktopgroup file",
     "type": "object",
