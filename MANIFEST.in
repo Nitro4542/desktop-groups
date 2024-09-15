@@ -1,5 +1,5 @@
-include src/desktop-groups/assets/json/desktopgroups.schema.json
-include src/desktop-groups/assets/img/desktopgroups256px.ico
-include src/desktop-groups/assets/lang/en.json
-include src/desktop-groups/assets/lang/de.json
-include src/desktop-groups/assets/lang/fr.json
+include src/desktop_groups/assets/json/desktopgroups.schema.json
+include src/desktop_groups/assets/img/desktopgroups256px.ico
+include src/desktop_groups/assets/lang/en.json
+include src/desktop_groups/assets/lang/de.json
+include src/desktop_groups/assets/lang/fr.json
