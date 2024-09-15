@@ -8,7 +8,6 @@ import os
 import subprocess
 import sys
 import tempfile
-from ctypes import windll
 from tkinter import IntVar, font
 
 from PIL import Image
@@ -16,7 +15,6 @@ from icoextract import IconExtractor, IconExtractorError
 import customtkinter
 from . import group
 from . import assets
-
 
 def _open_icon(icon: str):
     """Opens an icon and prepares it for PIL
@@ -310,6 +308,7 @@ class App(customtkinter.CTk, group.DGFileGroup):
 
         if os.name == 'nt':
             try:
+                from ctypes import windll
                 lang_id = windll.kernel32.GetUserDefaultUILanguage()
                 self.lang_code = locale.windows_locale.get(lang_id, 'en')
             except:
