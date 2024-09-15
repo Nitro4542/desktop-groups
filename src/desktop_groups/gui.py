@@ -169,6 +169,7 @@ class ButtonFrame(customtkinter.CTkFrame):
 
         :return: 'Continue' in selected language
         """
+
         return self.lang_data.get('gui.cancel')
 
 class App(customtkinter.CTk, group.DGFileGroup):
