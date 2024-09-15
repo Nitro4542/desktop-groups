@@ -6,7 +6,7 @@ import json
 import sys
 
 import jsonschema
-from . import assets
+from desktop_groups import assets
 
 
 class Group:
@@ -18,6 +18,7 @@ class Group:
         :param name: Group name
         :param icon: Group icon
         """
+
         self.name = name
         self.icon = icon
 
@@ -30,6 +31,7 @@ class Group:
         :param icon: Item icon
         :param command: Item command
         """
+
         self.items.append(dict(name = name, icon = icon, command = command))
 
     def remove_item(self, name: str):
@@ -38,6 +40,7 @@ class Group:
         :param name: Item name
         :return:
         """
+
         for item in self.items:
             if item['name'] == name:
                 self.items.remove(item)
@@ -52,7 +55,8 @@ class DGFileGroup(Group):
         """
         :param dg_file: Location of file
         """
-        # Read .desktopgroup file
+
+        # Read desktop group file
         with open(dg_file, 'r', encoding='utf-8') as file:
             self.data = json.load(file)
 
@@ -78,9 +82,10 @@ class DGFileGroup(Group):
 
     def validate(self):
         """
-        Validates the desktopgroup file
+        Validates the desktop group file
         :return: Returns True if file is valid
         """
+
         try:
             jsonschema.validate(self.data, self.schema)
         except jsonschema.ValidationError as e:
