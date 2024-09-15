@@ -281,7 +281,7 @@ class App(customtkinter.CTk, group.DGFileGroup):
         else:
             # Use default icon as fallback
             inp_file = importlib.resources.files(assets) / 'img/desktopgroups256px.ico'
-            with inp_file.open('rt') as default_icon:
+            with inp_file.open('rb') as default_icon:
                 with tempfile.NamedTemporaryFile(delete=False, suffix='.ico') as tmp_file:
                     tmp_file.write(default_icon.read())
                     tmp_file.flush()
