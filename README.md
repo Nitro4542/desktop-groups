@@ -8,7 +8,7 @@
 Pass a valid desktop group file to the script (and optionally specify a theme file), e.g:
 
 ```bash
-python -m desktop-groups C:\multimedia.desktopgroup --theme C:\theme.json
+desktop-groups C:\multimedia.desktopgroup --theme C:\theme.json
 ```
 
 >[!TIP]
