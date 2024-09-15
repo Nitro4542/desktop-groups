@@ -5,7 +5,7 @@ import argparse
 from . import gui
 
 
-if __name__ == '__main__':
+def main():
     # Initialize argparse and add arguments
     parser = argparse.ArgumentParser(prog='DesktopGroups', description='Organizes your desktop')
     parser.add_argument('filename', type=str, help='Path to desktopgroup file')
@@ -15,3 +15,6 @@ if __name__ == '__main__':
     # Open GUI
     app = gui.App(args.filename, args.theme)
     app.mainloop()
+
+if __name__ == '__main__':
+    main()

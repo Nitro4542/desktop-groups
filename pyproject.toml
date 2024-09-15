@@ -27,7 +27,7 @@ Homepage = "https://github.com/Nitro4542/desktop-groups"
 Issues = "https://github.com/Nitro4542/desktop-groups/issues"
 
 [project.scripts]
-desktop-groups = "desktop_groups:__main__"
+desktop-groups = "desktop_groups:__main__.main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
