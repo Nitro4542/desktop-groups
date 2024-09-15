@@ -56,7 +56,7 @@ class DGFileGroup(Group):
         :param dg_file: Location of file
         """
 
-        # Read .desktopgroup file
+        # Read desktop group file
         with open(dg_file, 'r', encoding='utf-8') as file:
             self.data = json.load(file)
 
@@ -82,7 +82,7 @@ class DGFileGroup(Group):
 
     def validate(self):
         """
-        Validates the desktopgroup file
+        Validates the desktop group file
         :return: Returns True if file is valid
         """
 
