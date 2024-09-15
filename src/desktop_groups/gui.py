@@ -13,8 +13,8 @@ from tkinter import IntVar, font
 from PIL import Image
 from icoextract import IconExtractor, IconExtractorError
 import customtkinter
-from . import group
-from . import assets
+from desktop_groups import group
+from desktop_groups import assets
 
 def _open_icon(icon: str):
     """Opens an icon and prepares it for PIL

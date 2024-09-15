@@ -6,7 +6,7 @@ import json
 import sys
 
 import jsonschema
-from . import assets
+from desktop_groups import assets
 
 
 class Group:
